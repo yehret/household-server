@@ -25,13 +25,13 @@ export const signup = async (req, res, next) => {
 export const signin = async (req, res, next) => {
    try {
      const user = await User.findOne({ email: req.body.email });
-     if (!user) return next(createError(404, "User not found!"));
+     if (!user) return next(createError(404, "Користувача не знайдено!"));
  
      const isCorrect = await bcrypt.compare(req.body.password, user.password);
  
-     if (!isCorrect) return next(createError(400, "Wrong Credentials!"));
+     if (!isCorrect) return next(createError(400, "Неправильно введені дані!"));
  
-     const token = jwt.sign({ id: user._id }, process.env.JWT);
+     const token = jwt.sign({ id: user._id }, process.env.JWT, { expiresIn: "14d"});
      const { password, ...others } = user._doc;
  
      res
