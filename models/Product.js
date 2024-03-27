@@ -10,16 +10,16 @@ const ProductSchema = new mongoose.Schema({
    },
    quantity: {
       type: Number,
-      requred: true,
+      required: true,
    },
    price: {
       type: Number,
       required: true
    },
-   categrory: {
+   category: {
       type: String,
       ref: "Category",
-      requied: true
+      required: true
    }
 }, {timestamps: true})
 
