@@ -18,7 +18,6 @@ const ProductSchema = new mongoose.Schema({
    },
    category: {
       type: String,
-      ref: "Category",
       required: true
    }
 }, {timestamps: true})
