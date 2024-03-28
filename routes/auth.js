@@ -11,6 +11,6 @@ router.post('/signin', signin)
 
 router.post('/google', /* googleauth */)
 
-router.get('/', isAdmin, verifyToken, getUsers)
+router.get('/', isAdmin, getUsers)
 
 export default router

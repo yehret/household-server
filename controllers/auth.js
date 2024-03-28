@@ -11,7 +11,7 @@ export const signup = async (req, res, next) => {
       } else {
          const salt = bcrypt.genSaltSync(10)
          const hash = bcrypt.hashSync(req.body.password, salt)
-         const newUser = new User({...req.body, password: hash, role: 'admin'})
+         const newUser = new User({...req.body, password: hash, role: 'user'})
    
          newUser.save()
          res.status(200).send("Користувач успішно створений")
