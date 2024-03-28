@@ -49,3 +49,15 @@ export const updateProduct = async (req, res, next) => {
       next(error)
    }
 }
+
+export const deleteProduct = async (req, res, next) => {
+   try {
+      const product = await Product.findById(req.params.id)
+      if(!product) return next(createError(404, "Товар не знайдено"))
+      
+      await Product.findByIdAndDelete(req.params.id)
+      res.status(200).send("Товар успішно видалено")
+   } catch (error) {
+      next(error)
+   }
+}
