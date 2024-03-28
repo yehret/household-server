@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import authRoutes from './routes/auth.js'
 import productsRoutes from './routes/products.js'
 import categoriesRoutes from './routes/categories.js'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 dotenv.config()
@@ -17,6 +18,7 @@ const connect = () => {
 }
 
 app.use(express.json())
+app.use(cookieParser())
 app.use("/api/auth", authRoutes)
 app.use("/api/products", productsRoutes)
 app.use("/api/categories", categoriesRoutes)

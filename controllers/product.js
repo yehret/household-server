@@ -1,9 +1,8 @@
 import Product from '../models/Product.js'
 import Category from '../models/Category.js'
-import { createError } from '../createError.js'
+import { createError } from '../middleware/createError.js'
 
 export const addProduct = async (req, res, next) => {
-   
    try {
       const category = await Category.findOne({ name: req.body.category })
       if(!category) {

@@ -1,6 +1,6 @@
 import User from '../models/User.js'
 import bcrypt from 'bcryptjs'
-import { createError } from '../createError.js'
+import { createError } from '../middleware/createError.js'
 import jwt from 'jsonwebtoken'
 
 export const signup = async (req, res, next) => {
@@ -11,7 +11,7 @@ export const signup = async (req, res, next) => {
       } else {
          const salt = bcrypt.genSaltSync(10)
          const hash = bcrypt.hashSync(req.body.password, salt)
-         const newUser = new User({...req.body, password: hash})
+         const newUser = new User({...req.body, password: hash, role: 'admin'})
    
          newUser.save()
          res.status(200).send("Користувач успішно створений")
@@ -31,7 +31,7 @@ export const signin = async (req, res, next) => {
  
      if (!isCorrect) return next(createError(400, "Неправильно введені дані!"));
  
-     const token = jwt.sign({ id: user._id }, process.env.JWT, { expiresIn: "14d"});
+     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT, { expiresIn: "14d"});
      const { password, ...others } = user._doc;
  
      res
@@ -44,3 +44,12 @@ export const signin = async (req, res, next) => {
      next(err);
    }
  };
+
+export const getUsers = async (req, res, next) => {
+   try {
+      const users = await User.find()
+      res.status(200).json(users);
+   } catch (error) {
+      next(error)
+   }
+}
