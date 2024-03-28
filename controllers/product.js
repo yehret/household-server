@@ -34,3 +34,18 @@ export const getByCategory = async (req, res, next) => {
       next(error)
    }
 }
+
+export const updateProduct = async (req, res, next) => {
+   try {
+      const product = await Product.findById(req.params.id)
+      if(!product) return next(createError(404, "Товар не знайдено"))
+
+      const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
+         $set: req.body
+      }, {new: true})
+
+      res.status(200).json(updatedProduct)
+   } catch (error) {
+      next(error)
+   }
+}
