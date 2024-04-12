@@ -5,6 +5,7 @@ import authRoutes from './routes/auth.js'
 import productsRoutes from './routes/products.js'
 import categoriesRoutes from './routes/categories.js'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 const app = express()
 dotenv.config()
@@ -17,6 +18,12 @@ const connect = () => {
    })
 }
 
+app.use(cors({
+   origin: 'http://localhost:5173',
+   methods: 'GET, POST, PUT, DELETE, PATCH',
+   credentials: true,
+   maxAge: 3600,
+}))
 app.use(express.json())
 app.use(cookieParser())
 app.use("/api/auth", authRoutes)

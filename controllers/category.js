@@ -2,7 +2,13 @@ import { createError } from "../middleware/createError.js";
 import Category from "../models/Category.js";
 
 export const addCategory = async (req, res, next) => {
-   const newCategory = new Category({name: req.body.name})
+   const reqName = req.body.name.toLowerCase()
+   const category = await Category.findOne({ name: req.body.name })
+   if(category) {
+      return next(createError(401, "Category already exists"))
+   }
+
+   const newCategory = new Category({ name: reqName })
    try {
       const savedCategory = await newCategory.save()
       res.status(200).json(savedCategory)
