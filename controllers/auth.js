@@ -17,7 +17,7 @@ export const signup = async (req, res, next) => {
          const newUser = new User({...req.body, password: hash, role: 'user'})
    
          newUser.save()
-         const { password, ...others } = newUser._doc;
+         const { password, role, ...others } = newUser._doc;
          const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT, { expiresIn: "14d"});
          
          res
@@ -43,7 +43,7 @@ export const signin = async (req, res, next) => {
      if (!isCorrect) return next(createError(400, "Неправильно введені дані!"));
  
      const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT, { expiresIn: "14d"});
-     const { password, ...others } = user._doc;
+     const { password, role, ...others } = user._doc;
  
      res
        .cookie("access_token", token, {
@@ -56,11 +56,15 @@ export const signin = async (req, res, next) => {
    }
  };
 
-export const getUsers = async (req, res, next) => {
+ export const logout = async (req, res, next) => {
    try {
-      const users = await User.find()
-      res.status(200).json(users);
-   } catch (error) {
-      next(error)
-   }
-}
+      res.cookie("access_token", "", {
+        httpOnly: false,
+        expires: new Date(0),
+      });
+  
+      res.status(200).json({ message: "Logged out successfully!" });
+    } catch (err) {
+      next(err);
+    }
+ }
