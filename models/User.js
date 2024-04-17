@@ -9,6 +9,10 @@ const UserSchema = new mongoose.Schema({
       type: String,
       required: true,
    },
+   middlename: {
+     type: String,
+     required: true,
+   },
    phoneNumber: {
       type: String,
       required: true,
@@ -28,5 +32,7 @@ const UserSchema = new mongoose.Schema({
       default: 'user'
    }
 }, {timestamps: true})
+
+UserSchema.index({ name: 0, surname: 0, middlename: 0 });
 
 export default mongoose.model('User', UserSchema)

@@ -4,14 +4,14 @@ import { createError } from '../middleware/createError.js'
 
 export const addProduct = async (req, res, next) => {
    try {
-      const category = await Category.findOne({ name: req.body.category })
+      const category = await Category.findOne({ name: req.body.category.toLowerCase() })
       if(!category) {
          return next(createError(400, "Category not found"))
       }
 
       const newProduct = new Product({
+         ...req.body,
          category: category.name,
-         ...req.body
       })
 
       const savedProduct = await newProduct.save()

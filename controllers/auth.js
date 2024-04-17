@@ -5,8 +5,11 @@ import jwt from 'jsonwebtoken'
 
 export const signup = async (req, res, next) => {
    const verifyEmail = await User.findOne({ email: req.body.email})
+   const verifyPhone = await User.findOne({ phoneNumber: req.body.phoneNumber})
    try {
       if(verifyEmail) {
+         return next(createError(403, "Користувач з даною електронною поштою вже існує"))
+      } else if(verifyPhone) {
          return next(createError(403, "Користувач з даною електронною поштою вже існує"))
       } else {
          const salt = bcrypt.genSaltSync(10)
@@ -14,7 +17,15 @@ export const signup = async (req, res, next) => {
          const newUser = new User({...req.body, password: hash, role: 'user'})
    
          newUser.save()
-         res.status(200).send("Користувач успішно створений")
+         const { password, ...others } = newUser._doc;
+         const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT, { expiresIn: "14d"});
+         
+         res
+         .cookie("access_token", token, {
+            httpOnly: true,
+         })
+         .status(200)
+         .json(others);
       }
    }
    catch (error) {
