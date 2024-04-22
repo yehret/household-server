@@ -41,3 +41,27 @@ export const checkIsAdmin = async (req, res, next) => {
       next(error)
    }
 }
+
+export const addFavourite = async (req, res, next) => {
+   try {
+      await User.findByIdAndUpdate(req.user.id, {
+         $push: { favourites: req.params.productId },
+      })
+
+      res.status(200).json("Успішно додано в обрані")
+   } catch (error) {
+      next(error)
+   }
+}
+
+export const removeFavourite = async (req, res, next) => {
+   try {
+      await User.findByIdAndUpdate(req.user.id, {
+         $pull: {favourites: req.params.productId },
+      })
+
+      res.status(200).json("Успішно видалено з обраних")
+   } catch (error) {
+      next(error)
+   }
+}

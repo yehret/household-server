@@ -10,7 +10,7 @@ export const signup = async (req, res, next) => {
       if(verifyEmail) {
          return next(createError(403, "Користувач з даною електронною поштою вже існує"))
       } else if(verifyPhone) {
-         return next(createError(403, "Користувач з даною електронною поштою вже існує"))
+         return next(createError(403, "Користувач з даним номером телефону вже існує"))
       } else {
          const salt = bcrypt.genSaltSync(10)
          const hash = bcrypt.hashSync(req.body.password, salt)
