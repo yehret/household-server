@@ -1,5 +1,6 @@
 import Product from '../models/Product.js'
 import Category from '../models/Category.js'
+import User from '../models/User.js'
 import { createError } from '../middleware/createError.js'
 
 export const addProduct = async (req, res, next) => {
@@ -72,3 +73,21 @@ export const getAllProducts = async (req, res, next) => {
    }
 }
 
+
+export const getFavourites = async (req, res, next) => {
+   try {
+      const user = await User.findById(req.user.id)
+      const favouritesProducts = user.favourites
+
+      const list = await Promise.all(
+         favouritesProducts.map(async (productId) => {
+            return await Product.find({ _id: productId })
+         })
+      )
+
+      res.status(200).json(list.flat().sort((a,b) => b.createdAt - a.createdAt))
+
+   } catch (error) {
+      next(error)
+   }
+}
