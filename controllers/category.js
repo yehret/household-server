@@ -8,7 +8,7 @@ export const addCategory = async (req, res, next) => {
       return next(createError(401, "Category already exists"))
    }
 
-   const newCategory = new Category({ name: reqName })
+   const newCategory = new Category({ name: reqName, imgURL: req.body.imgURL })
    try {
       const savedCategory = await newCategory.save()
       res.status(200).json(savedCategory)

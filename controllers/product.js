@@ -2,6 +2,7 @@ import Product from '../models/Product.js'
 import Category from '../models/Category.js'
 import User from '../models/User.js'
 import { createError } from '../middleware/createError.js'
+import cyrillicToTranslit from 'cyrillic-to-translit-js'
 
 export const addProduct = async (req, res, next) => {
    try {
@@ -52,7 +53,7 @@ export const deleteProduct = async (req, res, next) => {
 
 export const getByCategory = async (req, res, next) => {
    try {
-      const products = await Product.find({ category: req.params.category })
+      const products = await Product.find({ category: cyrillicToTranslit({ preset: "uk" }).reverse(req.params.category) })
       if(!products || products.length === 0) {
          next(createError(400, "Немає наявних товарів даної категорії"))
       } else {
