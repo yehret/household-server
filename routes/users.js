@@ -12,10 +12,11 @@ router.get('/', isAdmin, getUsers)
 
 router.get('/checkuser/:userId', checkIsAdmin)
 
-router.get("/logout/", logout)
+router.get("/logout", logout)
 
 router.put("/addtofavourites/:productId", verifyToken, addFavourite)
 
 router.put("/removefromfavourites/:productId", verifyToken, removeFavourite)
 
 export default router
+

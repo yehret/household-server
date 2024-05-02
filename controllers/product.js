@@ -92,3 +92,14 @@ export const getFavourites = async (req, res, next) => {
       next(error)
    }
 }
+
+export const getProduct = async (req, res, next) => {
+   try {
+      const product = await Product.findById(req.params.productId);
+      if(!product) return next(createError(404, "Product not found"))
+
+      res.status(200).json(product)
+   } catch(error) {
+      next(error)
+   }
+}

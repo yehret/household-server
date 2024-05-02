@@ -21,6 +21,16 @@ const UserSchema = new mongoose.Schema({
    favourites: {
       type: [String],
    },
+   feedbacks: {
+      type: [{
+         productId: {
+            type: String
+         },
+         feedbackText: {
+            type: String
+         }
+      }]
+   },
    email: {
       type: String,
       required: true,
@@ -28,10 +38,11 @@ const UserSchema = new mongoose.Schema({
    },
    password: {
       type: String,
+      required: true
    },
    role: {
       type: String,
-      enum: ['admin', 'user'],
+      enum: ['admin', 'user', 'dropshipper'],
       default: 'user'
    }
 }, {timestamps: true})

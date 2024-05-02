@@ -13,7 +13,7 @@ const ProductSchema = new mongoose.Schema({
       type: String
    },
    description: {
-      name: String,
+      type: String,
    },
    quantity: {
       type: Number,
@@ -26,6 +26,17 @@ const ProductSchema = new mongoose.Schema({
    category: {
       type: String,
       required: true
+   },
+   discount: {
+      type: String
+   },
+   discountTime: {
+      startTime: {
+         type: String
+      },
+      endTime: {
+         type: String
+      }
    }
 }, {timestamps: true})
 
