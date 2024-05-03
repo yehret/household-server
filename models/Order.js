@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const OrderSchema = new mongoose.Schema({
-   clientId: {
+   orderId: {
       type: String,
-      required: true,
+      required: true
    },
    clientNumber: {
       type: String,
@@ -24,13 +24,15 @@ const OrderSchema = new mongoose.Schema({
    orderStack: [{
       productId: { type: String, required: true },
       productName: { type: String, required: true },
-      quantity: { type: Number, required: true, min: 1 },
+      productImgURL: { type: String},
+      productBrandname: { type: String, required: true },
+      quantityOrder: { type: Number, required: true, min: 1 },
       price: { type: Number, required: true }
    }],
    status: {
       type: String,
-      enum: ['в обробці' , 'виконано', 'скасовано'],
-      default: 'в обробці'
+      enum: ['очікує підтвердження', 'в обробці', 'виконано', 'скасовано'],
+      default: 'очікує підтвердження'
    }
 }, {timestamps: true})
 
