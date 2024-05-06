@@ -3,7 +3,13 @@ import Order from "../models/Order.js"
 
 export const addOrder = async (req, res, next) => {
    try {
-      await new Order({ ...req.body }).save()
+      const latestOrder = await Order.findOne().sort({ orderId: -1 }).exec()
+      let nextOrderId = 1;
+
+      if(latestOrder) nextOrderId = Number(latestOrder.orderId) + 1;
+
+      const newOrder = new Order({ ...req.body, orderId: nextOrderId})
+      await newOrder.save()
 
       res.status(200).json("Замовлення успішно відправлено")
    } catch (error) {
