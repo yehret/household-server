@@ -1,5 +1,7 @@
 import { createError } from "../middleware/createError.js";
 import User from "../models/User.js";
+import jwt from 'jsonwebtoken'
+
 
 export const getUsers = async (req, res, next) => {
    try {
@@ -61,6 +63,19 @@ export const removeFavourite = async (req, res, next) => {
       })
 
       res.status(200).json("Успішно видалено з обраних")
+   } catch (error) {
+      next(error)
+   }
+}
+
+export const addDropshipper = async (req, res, next) => {
+   try {
+      const userId = req.params.userId
+      const user = await User.findOneAndUpdate({ _id: userId }, { role: 'dropshipper'})
+
+      if(!user) next(createError(404, 'Користувача не знайдено'))
+
+      res.status(200).json("Дропшипера успішно додано")
    } catch (error) {
       next(error)
    }

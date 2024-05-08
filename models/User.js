@@ -31,6 +31,42 @@ const UserSchema = new mongoose.Schema({
          }
       }]
    },
+   dropshipperInfo: {
+      status: {
+         type: Boolean,
+         default: false
+      },
+      codeDRFO: {
+         type: String,
+      },
+      iban: {
+         type: String
+      },
+      bankName: {
+         type: String,
+      },
+      mfo: {
+         type: String,
+      },
+      country: {
+         type: String
+      },
+      index: {
+         type: String,
+      },
+      region: {
+
+      },
+      district: {
+         type: String,
+      },
+      city: {
+         type: String,
+      },
+      address: {
+         type: String
+      }
+   },
    email: {
       type: String,
       required: true,

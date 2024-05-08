@@ -1,5 +1,5 @@
 import express from 'express'
-import { addFavourite, checkIsAdmin, getUserById, getUsers, removeFavourite } from '../controllers/user.js'
+import { addDropshipper, addFavourite, checkIsAdmin, getUserById, getUsers, removeFavourite } from '../controllers/user.js'
 import { isAdmin } from '../middleware/isAdmin.js'
 import { logout } from '../controllers/auth.js'
 import { verifyToken } from '../middleware/verifyToken.js'
@@ -17,6 +17,8 @@ router.get("/logout", logout)
 router.put("/addtofavourites/:productId", verifyToken, addFavourite)
 
 router.put("/removefromfavourites/:productId", verifyToken, removeFavourite)
+
+router.put('/dropship/:userId', isAdmin, addDropshipper)
 
 export default router
 
