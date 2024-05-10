@@ -32,6 +32,9 @@ const UserSchema = new mongoose.Schema({
       }]
    },
    dropshipperInfo: {
+      applicationDate: {
+         type: Date
+      },
       status: {
          type: Boolean,
          default: false
@@ -51,11 +54,11 @@ const UserSchema = new mongoose.Schema({
       country: {
          type: String
       },
-      index: {
+      mailIndex: {
          type: String,
       },
       region: {
-
+         type: String
       },
       district: {
          type: String,
@@ -78,11 +81,18 @@ const UserSchema = new mongoose.Schema({
    },
    role: {
       type: String,
-      enum: ['admin', 'user', 'dropshipper'],
+      enum: ['admin', 'user', 'dropshipper', 'wannabedropshipper'],
       default: 'user'
    }
 }, {timestamps: true})
 
 UserSchema.index({ name: 0, surname: 0, middlename: 0 });
+
+UserSchema.pre('save', function(next) {
+   if (this.isModified('role') && this.role === 'wannabedropshipper') {
+      this.applicationDate = new Date();
+   }
+   next();
+});
 
 export default mongoose.model('User', UserSchema)

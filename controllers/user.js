@@ -71,12 +71,72 @@ export const removeFavourite = async (req, res, next) => {
 export const addDropshipper = async (req, res, next) => {
    try {
       const userId = req.params.userId
-      const user = await User.findOneAndUpdate({ _id: userId }, { role: 'dropshipper'})
+      const user = await User.findOneAndUpdate({ _id: userId }, { role: 'dropshipper'}).select('-password')
 
       if(!user) next(createError(404, 'Користувача не знайдено'))
 
-      res.status(200).json("Дропшипера успішно додано")
+      res.status(200).json(user)
    } catch (error) {
       next(error)
    }
 }
+
+export const requestDropshipping = async (req, res, next) => {
+   try {
+      const userId = req.params.userId
+      const { name, lastname, middlename, phone, email, country, mailIndex, region, district, city, address, drfo, mfo, iban, bankName } = req.body
+      const user = await User.findOneAndUpdate({ _id: userId}, {
+         name,
+         middlename,
+         surname: lastname,
+         phoneNumber: phone,
+         dropshipperInfo: {
+            status: false,
+            codeDRFO: drfo,
+            iban,
+            bankName,
+            mfo,
+            country,
+            mailIndex,
+            region,
+            district,
+            city,
+            address
+         },
+         email,
+         role: 'wannabedropshipper'
+      })
+
+      if(!user) return next(createError(404, 'Користувача не знайдено'))
+         
+      res.status(200).json("Заявку успішно відправлено")
+   } catch (error) {
+      next(error)
+   }
+}
+
+export const getDropshippers = async (req, res, next) => {
+   try {
+      const users = await User.find({ role: { $in: ['wannabedropshipper', 'dropshipper'] } }).select('-password').sort({role: -1})
+
+      if(!users) return next(createError(404, "Користувачів не знайдено"))
+
+      res.status(200).json(users)
+   } catch (error) {
+      next(error)
+   }
+}
+
+// export const confirmDropshipper = async (req, res, next) => {
+//    try {
+//       const userId = req.params.userId
+//       const user = await User.findOneAndUpdate({ _id: userId}, { role: 'dropshipper'})
+
+//       if(!user) return next(createError(404, 'Користувача не знайдено'))
+
+//       res.status(200).json(user)
+
+//    } catch (error) {
+//       next(error)
+//    }
+// }

@@ -14,7 +14,6 @@ const OrderSchema = new mongoose.Schema({
    },
    clientMiddlename: {
       type: String,
-      required: true
    },
    clientLastname: {
       type: String,
