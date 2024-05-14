@@ -53,9 +53,9 @@ export const deleteProduct = async (req, res, next) => {
 
 export const getByCategory = async (req, res, next) => {
    try {
-      const products = await Product.find({ category: cyrillicToTranslit({ preset: "uk" }).reverse(req.params.category) })
+      const products = await Product.find({ category: req.params.category })
       if(!products || products.length === 0) {
-         next(createError(400, "Немає наявних товарів даної категорії"))
+         next(createError(404, "Немає наявних товарів даної категорії"))
       } else {
          res.status(200).json(products)
       }
