@@ -14,7 +14,7 @@ export const getUsers = async (req, res, next) => {
 
 export const getUserById = async (req, res, next) => {
    try {
-      const user = await User.findById(req.params.userId)
+      const user = await User.findById(req.params.userId).select('-password')
       if(!user) {
          return next(createError(401, "User not found"))
       }
@@ -71,7 +71,7 @@ export const removeFavourite = async (req, res, next) => {
 export const addDropshipper = async (req, res, next) => {
    try {
       const userId = req.params.userId
-      const user = await User.findOneAndUpdate({ _id: userId }, { role: 'dropshipper'}).select('-password')
+      const user = await User.findOneAndUpdate({ _id: userId }, { role: 'dropshipper', dropshipperInfo: { status: true }}).select('-password')
 
       if(!user) next(createError(404, 'Користувача не знайдено'))
 
@@ -127,16 +127,27 @@ export const getDropshippers = async (req, res, next) => {
    }
 }
 
-// export const confirmDropshipper = async (req, res, next) => {
-//    try {
-//       const userId = req.params.userId
-//       const user = await User.findOneAndUpdate({ _id: userId}, { role: 'dropshipper'})
+export const getNotApproved = async (req, res, next) => {
+   try {
+      const users = await User.find({ role: { $in: ['wannabedropshipper'] } }).select('-password').sort({role: -1})
 
-//       if(!user) return next(createError(404, 'Користувача не знайдено'))
+      if(!users) return next(createError(404, "Користувачів не знайдено"))
 
-//       res.status(200).json(user)
+      res.status(200).json(users)
+   } catch (error) {
+      next(error)
+   }
+}
 
-//    } catch (error) {
-//       next(error)
-//    }
-// }
+export const changeNotifiedStatus = async (req, res, next) => {
+   try {
+      const userId = req.params.userId
+      const user = await User.findByIdAndUpdate(userId, {notified: true})
+
+      if(!user) next(createError('Користувача не знайдено'))
+
+      res.status(200).json('notified successfully')
+   } catch (error) {
+      next(error)
+   }
+}

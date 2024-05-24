@@ -79,6 +79,10 @@ const UserSchema = new mongoose.Schema({
       type: String,
       required: true
    },
+   notified: {
+      type: Boolean,
+      default: false
+   },
    role: {
       type: String,
       enum: ['admin', 'user', 'dropshipper', 'wannabedropshipper'],
