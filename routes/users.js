@@ -1,5 +1,5 @@
 import express from 'express'
-import { addDropshipper, addFavourite, changeNotifiedStatus, checkIsAdmin, getDropshippers, getUserById, getUsers, removeFavourite, requestDropshipping } from '../controllers/user.js'
+import { addDropshipper, addFavourite, changeNotifiedStatus, checkIsAdmin, getDropshippers, getNotApproved, getUserById, getUsers, removeFavourite, requestDropshipping } from '../controllers/user.js'
 import { isAdmin } from '../middleware/isAdmin.js'
 import { logout } from '../controllers/auth.js'
 import { verifyToken } from '../middleware/verifyToken.js'
@@ -21,7 +21,7 @@ router.put("/removefromfavourites/:productId", verifyToken, removeFavourite)
 
 router.get('/dropshippers/', isAdmin, getDropshippers)
 
-router.get('/not-approved-dropshippers/', isAdmin, getDropshippers)
+router.get('/dropshippers/not-approved', isAdmin, getNotApproved)
 
 router.put('/dropshippers/:userId', isAdmin, addDropshipper)
 
