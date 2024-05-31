@@ -7,6 +7,7 @@ import cyrillicToTranslit from 'cyrillic-to-translit-js'
 export const addProduct = async (req, res, next) => {
    try {
       const category = await Category.findOne({ name: req.body.category.toLowerCase() })
+
       if(!category) {
          return next(createError(400, "Category not found"))
       }
@@ -99,6 +100,23 @@ export const getProduct = async (req, res, next) => {
       if(!product) return next(createError(404, "Product not found"))
 
       res.status(200).json(product)
+   } catch(error) {
+      next(error)
+   }
+}
+
+
+export const searchProducts = async (req, res, next) => {
+   const query = req.query.q
+   try {
+      const products = await Product.find({
+         $or: [
+            { name: { $regex: query, $options: 'i' } },
+            { brandname: { $regex: query, $options: 'i' } }
+         ]
+      }).limit(40);
+
+      res.status(200).json(products)
    } catch(error) {
       next(error)
    }
