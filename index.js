@@ -48,9 +48,12 @@ app.use((err, req, res, next) => {
 
 connect()
 
-// app.listen(8800, () => {
-//    console.log("Server Connected")
-//    connect()
-// })
+app.listen(process.env.PORT || 4444, (err) => {
+   if (err) {
+     return console.log(err);
+   }
+ 
+   console.log('Server OK');
+ });
 
 module.exports = app;
