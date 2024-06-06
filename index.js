@@ -21,7 +21,7 @@ const connect = () => {
 }
 
 app.use(cors({
-   origin: 'https://household-server.onrender.com',
+   origin: 'https://household-shop.vercel.app',
    methods: 'GET, POST, PUT, DELETE, PATCH',
    credentials: true,
    maxAge: 3600,
