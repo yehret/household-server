@@ -46,9 +46,11 @@ app.use((err, req, res, next) => {
    })
 })
 
-app.listen(8800, () => {
-   console.log("Server Connected")
-   connect()
-})
+connect()
+
+// app.listen(8800, () => {
+//    console.log("Server Connected")
+//    connect()
+// })
 
 module.exports = app;
