@@ -55,5 +55,3 @@ app.listen(process.env.PORT || 4444, (err) => {
  
    console.log('Server OK');
  });
-
-module.exports = app;
