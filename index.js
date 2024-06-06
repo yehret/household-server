@@ -21,7 +21,7 @@ const connect = () => {
 }
 
 app.use(cors({
-   origin: '*',
+   origin: 'https://household-server.onrender.com',
    methods: 'GET, POST, PUT, DELETE, PATCH',
    credentials: true,
    maxAge: 3600,
