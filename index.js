@@ -28,6 +28,7 @@ app.use(cors({
 }))
 app.use(express.json())
 app.use(cookieParser())
+app.get("/", (req, res) => res.send("Express on Vercel"));
 app.use("/api/auth", authRoutes)
 app.use("/api/products", productsRoutes)
 app.use("/api/categories", categoriesRoutes)
@@ -49,3 +50,5 @@ app.listen(8800, () => {
    console.log("Server Connected")
    connect()
 })
+
+module.exports = app;
