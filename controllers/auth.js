@@ -18,14 +18,13 @@ export const signup = async (req, res, next) => {
    
          await newUser.save()
          const { password, role, ...others } = newUser._doc;
-         const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT, { expiresIn: new Date(new Date().getTime() + 31557600000)});
+         const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT, { expiresIn: '14d'});
          
          res
          .cookie("access_token", token, {
-            domain: 'https://household-shop.vercel.app',
-            httpOnly: true,
             secure: true,
-            sameSite: 'none'
+            sameSite: 'none',
+            expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
          })
          .status(200)
          .json(others);
@@ -45,15 +44,14 @@ export const signin = async (req, res, next) => {
  
      if (!isCorrect) return next(createError(400, "Неправильно введені дані!"));
  
-     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT, { expiresIn: "14d"});
+     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT, { expiresIn: '14d'});
      const { password, role, ...others } = user._doc;
  
      res
      .cookie("access_token", token, {
-        domain: 'https://household-shop.vercel.app',
-        httpOnly: true,
         secure: true,
-        sameSite: 'none'
+        sameSite: 'none',
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
      })
      .status(200)
      .json(others);
@@ -65,8 +63,9 @@ export const signin = async (req, res, next) => {
  export const logout = async (req, res, next) => {
    try {
       res.cookie("access_token", "", {
-        httpOnly: false,
         expires: new Date(0),
+        secure: true,
+        sameSite: 'none',
       });
   
       res.status(200).json({ message: "Logged out successfully!" });
