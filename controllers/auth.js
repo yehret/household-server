@@ -18,7 +18,7 @@ export const signup = async (req, res, next) => {
    
          await newUser.save()
          const { password, role, ...others } = newUser._doc;
-         const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT, { expiresIn: "14d"});
+         const token = jwt.sign({ id: newUser._id, role: newUser.role }, process.env.JWT, { expiresIn: new Date(new Date().getTime() + 31557600000)});
          
          res
          .cookie("access_token", token, {
